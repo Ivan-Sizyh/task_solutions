@@ -1,5 +1,6 @@
 class Station
   attr_reader :name
+
   def initialize(name)
     @name = name
     @trains = []
@@ -14,23 +15,11 @@ class Station
   end
 
   def get_cargo_trains
-    train_list = []
-    @trains.each do |train|
-      if train.type == "грузовой"
-        train_list << train
-      end
-    end
-    train_list
+    @trains.filter { |train| train.type == 'грузовой' }
   end
 
   def get_passenger_trains
-    train_list = []
-    @trains.each do |train|
-      if train.type == "пассажирский"
-        train_list << train
-      end
-    end
-    train_list
+    @trains.filter { |train| train.type == 'пассажирский' }
   end
 
   def get_train(train)
@@ -94,17 +83,11 @@ class Train
   end
 
   def to_next_station
-    if @station != @route.stations_list.last
-      station = @route.stations_list.index(@station)
-      @station = @route.stations_list[station + 1]
-    end
+    @station = next_station if next_station
   end
 
   def to_back_station
-    if @station != @route.stations_list.first
-      station = @route.stations_list.index(@station)
-      @station = @route.stations_list[station - 1]
-    end
+    @station = previous_station if previous_station
   end
 
   def previous_station
@@ -112,8 +95,6 @@ class Train
       station = @route.stations_list.index(@station)
       if station != 0
         @route.stations_list[station - 1]
-      else
-        @route.stations_list[station]
       end
     end
   end
@@ -123,8 +104,6 @@ class Train
       station = @route.stations_list.index(@station)
       if (station + 1) != @route.stations_list.length
         @route.stations_list[station + 1]
-      else
-        @route.stations_list[station]
       end
     end
   end
