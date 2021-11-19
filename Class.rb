@@ -78,16 +78,27 @@ class Train
   end
 
   def route=(route)
-    @route = route
-    @station = route.stations_list.first
+    if route
+      @route = route
+      @station = route.stations_list.first
+      @station.add_train(self)
+    end
   end
 
   def to_next_station
-    @station = next_station if next_station
+    if next_station
+      @station.get_train(self)
+      @station = next_station
+      @station.add_train(self)
+    end
   end
 
   def to_back_station
-    @station = previous_station if previous_station
+    if previous_station
+      @station.get_train(self)
+      @station = previous_station
+      @station.add_train(self)
+    end
   end
 
   def previous_station
