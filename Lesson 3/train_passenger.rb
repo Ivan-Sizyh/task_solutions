@@ -5,7 +5,4 @@ class PassengerTrain < Train
     @type = "пассажирский"
   end
 
-  def add_wagon(wagon)
-    super(wagon) if wagon.type == "пассажирский"
-  end
 end

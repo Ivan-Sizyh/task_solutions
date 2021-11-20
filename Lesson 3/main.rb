@@ -23,110 +23,17 @@ class Program
       case gets.chomp.to_i
 
       when 1#Создать станцию, поезд, маршрут
-        puts "Выберите операцию:\n1 - Создать станцию\n2 - Создать поезд\n3 - Создать маршрут\n4 - Вернуться назад"
-        print"Операция:"
 
-        case gets.chomp.to_i
-
-        when 1#Создать станцию
-
-          create_station
-
-        when 2 #Создать поезд
-
-          create_train
-
-        when 3#Создать маршрут
-
-          create_route
-
-        else
-          next
-        end
+        create_new_object
 
       when 2#Опрерации с объектами
 
-        puts "Выберите тип операции:\n1 - Операции с маршрутами\n2 - Операции с поездами\n3 - Вернуться назад"
-        print"Операция:"
-        case gets.chomp.to_i
-
-        when 1#Операции с маршрутами
-          puts "Выберите операции для маршрута:\n1 - Удалить станцию\n2 - Добавить станцию\n3 - Вернуться"
-          print "Операция:"
-          operation = gets.chomp
-          print"Введите ID маршрута, который хотите редактировать:"
-          route_id = gets.chomp.to_i
-          print "Введите название станции:"
-          station_name = gets.chomp
-
-          if (@routes.length >= route_id.to_i) & (route_id.to_i > 0)
-
-            case operation.to_i
-            when 1#Удаление
-
-              delete_route(route_id, station_name)
-
-            when 2#Добавить станцию
-
-              add_station(route_id, station_name)
-
-            else
-              next
-            end
-
-          else
-            puts "Маршрута с таким ID не найдено"
-          end
-
-        when 2#Операции с поездами
-
-          puts "Выберите операции для поезда:\n1 - Назначить маршрут\n2 - Добавить вагон\n3 - Отцепить вагон\n4 - Переместить поезд\n5 - Вернуться"
-          print "Операция:"
-          operation = gets.chomp
-
-          print"Введите номер поезда:"
-          train_number = gets.chomp
-
-          train = @trains.filter{|item| item.number.to_s == train_number}.first
-
-          if train
-            puts "Поезд #{train.number} найден"
-            case operation.to_i
-            when 1 #Присвоить маршрут
-              train_set_route(train)
-            when 2 #Добавить вагон
-              train_add_wagon(train)
-            when 3 #Отцепить вагон
-              train_remove_wagon(train)
-            when 4 #Движение
-              train_move(train)
-            else
-              next
-            end
-          else
-            puts "Поезда с номером #{train_number} не найдено"
-          end
-        else
-          next
-        end
+        operation_with_object
 
       when 3#Просмотреть список станций или поездов на станции
 
-        @routes.each do |route|
-          @stations = @stations | route.stations_list
-        end
+        show_objects_info
 
-        puts "Выберите операцию:\n1 - Просмотреть список станций\n2 - Просмотреть список поездов на станции\n3 - Вернуться"
-        print "Операция:"
-
-        case gets.chomp.to_i
-        when 1 #Список станций
-          show_stations
-        when 2 #Просмотреть список поездов
-          show_trains_on_station
-        else
-          next
-        end
       else
         break
       end
@@ -136,6 +43,114 @@ class Program
   private
 
   attr_accessor :stations, :trains, :routes
+
+  def create_new_object
+    puts "Выберите операцию:\n1 - Создать станцию\n2 - Создать поезд\n3 - Создать маршрут\n4 - Вернуться назад"
+    print"Операция:"
+
+    case gets.chomp.to_i
+
+    when 1#Создать станцию
+
+      create_station
+
+    when 2 #Создать поезд
+
+      create_train
+
+    when 3#Создать маршрут
+
+      create_route
+
+    else
+      puts "Выбрана операция возврата"
+    end
+  end
+
+  def operation_with_object
+    puts "Выберите тип операции:\n1 - Операции с маршрутами\n2 - Операции с поездами\n3 - Вернуться назад"
+    print"Операция:"
+    case gets.chomp.to_i
+
+    when 1#Операции с маршрутами
+      puts "Выберите операции для маршрута:\n1 - Удалить станцию\n2 - Добавить станцию\n3 - Вернуться"
+      print "Операция:"
+      operation = gets.chomp
+      print"Введите ID маршрута, который хотите редактировать:"
+      route_id = gets.chomp.to_i
+      print "Введите название станции:"
+      station_name = gets.chomp
+
+      if (@routes.length >= route_id.to_i) & (route_id.to_i > 0)
+
+        case operation.to_i
+        when 1#Удаление
+
+          delete_route(route_id, station_name)
+
+        when 2#Добавить станцию
+
+          add_station(route_id, station_name)
+
+        else
+          puts "Выбрана операция возврата"
+        end
+
+      else
+        puts "Маршрута с таким ID не найдено"
+      end
+
+    when 2#Операции с поездами
+
+      puts "Выберите операции для поезда:\n1 - Назначить маршрут\n2 - Добавить вагон\n3 - Отцепить вагон\n4 - Переместить поезд\n5 - Вернуться"
+      print "Операция:"
+      operation = gets.chomp
+
+      print"Введите номер поезда:"
+      train_number = gets.chomp
+
+      train = @trains.filter{|item| item.number.to_s == train_number}.first
+
+      if train
+        puts "Поезд #{train.number} найден"
+        case operation.to_i
+        when 1 #Присвоить маршрут
+          train_set_route(train)
+        when 2 #Добавить вагон
+          train_add_wagon(train)
+        when 3 #Отцепить вагон
+          train_remove_wagon(train)
+        when 4 #Движение
+          train_move(train)
+        else
+          puts "Выбрана операция возврата"
+        end
+      else
+        puts "Поезда с номером #{train_number} не найдено"
+      end
+    else
+      puts "Выбрана операция возврата"
+    end
+  end
+
+  def show_objects_info
+    @routes.each do |route|
+      @stations = @stations | route.stations_list
+    end
+
+    puts "Выберите операцию:\n1 - Просмотреть список станций\n2 - Просмотреть список поездов на станции\n3 - Вернуться"
+    print "Операция:"
+
+    case gets.chomp.to_i
+    when 1 #Список станций
+      show_stations
+    when 2 #Просмотреть список поездов
+      show_trains_on_station
+    else
+      puts "Выбрана операция возврата"
+    end
+  end
+
 
   def create_station
     print"Введите название станции:"

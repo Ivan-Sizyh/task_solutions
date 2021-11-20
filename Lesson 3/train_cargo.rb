@@ -5,8 +5,4 @@ class CargoTrain < Train
     @type = "грузовой"
   end
 
-  def add_wagon(wagon)
-    super(wagon) if wagon.type == "грузовой"
-  end
-
 end

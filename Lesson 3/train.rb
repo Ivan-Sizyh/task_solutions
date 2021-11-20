@@ -65,7 +65,14 @@ class Train
 
   def add_wagon(wagon)
     if train_stop?
-      @wagons_list << wagon
+      case wagon.type
+      when "грузовой"
+        @wagons_list << wagon
+      when "пассажирский"
+        @wagons_list << wagon
+      else
+
+      end
     end
   end
 
