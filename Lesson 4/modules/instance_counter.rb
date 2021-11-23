@@ -9,7 +9,7 @@ module InstanceCounter
     attr_accessor :counter
 
     def instances
-      counter ? counter : 0
+      counter || 0
     end
   end
 
