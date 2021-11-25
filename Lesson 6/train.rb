@@ -95,11 +95,7 @@ class Train
   end
 
   def operation_with_wagons(&block)
-    if block_given?
-      @wagons_list.map { |wagon| block.call(wagon) }
-    else
-      @wagons_list
-    end
+      @wagons_list.map { |wagon| block.call(wagon) } if block_given?
   end
 
   protected
