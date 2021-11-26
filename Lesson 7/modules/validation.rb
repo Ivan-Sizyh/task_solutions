@@ -21,6 +21,15 @@ module Validation
   end
 
   module InstanceMethods
+    def valid?
+      validate!
+      true
+    rescue
+      false
+    end
+
+    protected
+
     def validate!
       self.class.validations.each do |operation|
 
@@ -39,13 +48,6 @@ module Validation
           next
         end
       end
-    end
-
-    def valid?
-      validate!
-      true
-    rescue
-      false
     end
   end
 end
